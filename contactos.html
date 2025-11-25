@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Politécnico Profesor Víctor Pascual Aguero</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(ellipse at bottom, #1B0000 0%, #000000 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .stars,
+        .stars2,
+        .stars3 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .stars {
+            background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2"><circle cx="1" cy="1" r="1" fill="white"/></svg>') repeat;
+            background-size: 200px 200px;
+            animation: animateStars 50s linear infinite;
+            opacity: 0.5;
+        }
+
+        .stars2 {
+            background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="3" height="3"><circle cx="1.5" cy="1.5" r="1.5" fill="white"/></svg>') repeat;
+            background-size: 300px 300px;
+            animation: animateStars 100s linear infinite;
+            opacity: 0.3;
+        }
+
+        .stars3 {
+            background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><circle cx="2" cy="2" r="2" fill="red"/></svg>') repeat;
+            background-size: 400px 400px;
+            animation: animateStars 150s linear infinite;
+            opacity: 0.2;
+        }
+
+        @keyframes animateStars {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-2000px); }
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a0000 0%, #330000 50%, #1a0000 100%);
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+            border-bottom: 2px solid #660000;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #660000, #990000);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            border: 2px solid #660000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #ff4444;
+            text-shadow: 0 0 20px rgba(255, 68, 68, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.9);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #ffaaaa;
+            font-size: 1.2em;
+            text-shadow: 0 0 10px rgba(255, 170, 170, 0.5);
+        }
+
+        nav {
+            background: linear-gradient(135deg, #0d0000 0%, #220000 100%);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #440000;
+            position: relative;
+            z-index: 10;
+        }
+
+        nav button {
+            background: linear-gradient(135deg, #330000 0%, #660000 100%);
+            color: #ffcccc;
+            border: 2px solid #880000;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(255, 0, 0, 0.2);
+        }
+
+        nav button:hover {
+            background: linear-gradient(135deg, #660000 0%, #990000 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 0, 0, 0.5);
+            border-color: #ff0000;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .contacto-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .contacto-info, .contacto-form {
+            background: linear-gradient(135deg, rgba(20, 0, 0, 0.95) 0%, rgba(40, 0, 0, 0.95) 100%);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(255, 0, 0, 0.3);
+            border: 1px solid #660000;
+        }
+
+        .contacto-info h2, .contacto-form h2 {
+            color: #ff4444;
+            margin-bottom: 25px;
+            font-size: 2em;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+            text-align: center;
+        }
+
+        .info-item {
+            background: linear-gradient(135deg, #330000 0%, #660000 50%, #330000 100%);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 2px solid #880000;
+            transition: all 0.3s;
+        }
+
+        .info-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
+            border-color: #ff0000;
+        }
+
+        .info-item .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .info-item h3 {
+            color: #ff6666;
+            margin-bottom: 8px;
+            font-size: 1.3em;
+        }
+
+        .info-item p, .info-item a {
+            color: #ffcccc;
+            text-decoration: none;
+            line-height: 1.6;
+        }
+
+        .info-item a:hover {
+            color: #ff4444;
+            text-decoration: underline;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ff6666;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(51, 0, 0, 0.8);
+            border: 2px solid #880000;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff4444;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+            background: rgba(66, 0, 0, 0.9);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #660000 0%, #990000 100%);
+            color: white;
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #990000 0%, #cc0000 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.6);
+        }
+
+        .mapa-section {
+            background: linear-gradient(135deg, rgba(20, 0, 0, 0.95) 0%, rgba(40, 0, 0, 0.95) 100%);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(255, 0, 0, 0.3);
+            border: 1px solid #660000;
+            margin-bottom: 40px;
+        }
+
+        .mapa-section h2 {
+            color: #ff4444;
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+            text-align: center;
+        }
+
+        .mapa-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #880000;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .mapa-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .horario-section {
+            background: linear-gradient(135deg, rgba(20, 0, 0, 0.95) 0%, rgba(40, 0, 0, 0.95) 100%);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(255, 0, 0, 0.3);
+            border: 1px solid #660000;
+        }
+
+        .horario-section h2 {
+            color: #ff4444;
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+            text-align: center;
+        }
+
+        .horario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .horario-card {
+            background: linear-gradient(135deg, #330000 0%, #660000 50%, #330000 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #880000;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .horario-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
+            border-color: #ff0000;
+        }
+
+        .horario-card h3 {
+            color: #ff6666;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .horario-card p {
+            color: #ffcccc;
+            line-height: 1.8;
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #003300 0%, #006600 100%);
+            color: #ccffcc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #00ff00;
+            text-align: center;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            background: linear-gradient(135deg, #0d0000 0%, #1a0000 100%);
+            color: #ffaaaa;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 2px solid #660000;
+            box-shadow: 0 -4px 15px rgba(255, 0, 0, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                width: 80px;
+                height: 80px;
+                font-size: 2em;
+            }
+
+            nav button {
+                display: block;
+                width: 90%;
+                margin: 10px auto;
+            }
+
+            .contacto-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin: 20px 10px;
+                padding: 15px;
+            }
+
+            .mapa-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo del politecnico"></div>
+            <div class="header-text">
+                <h1>POLITÉCNICO PROFESOR VÍCTOR PASCUAL AGUERO</h1>
+                <p class="subtitle">Educación de Calidad para el Futuro</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <button onclick="window.location.href='index.html'">🏠 Inicio</button>
+        <button onclick="window.location.href='estudiantes.html'">👥 Estudiantes</button>
+        <button onclick="window.location.href='profesores.html'">👨‍🏫 Profesores</button>
+        <button onclick="window.location.href='galeria.html'">📸 Galería</button>
+        <button onclick="window.location.href='contacto.html'">📞 Contacto</button>
+    </nav>
+
+    <div class="container">
+        <div class="contacto-grid">
+            <!-- Información de Contacto -->
+            <div class="contacto-info">
+                <h2>📞 Información de Contacto</h2>
+                
+                <div class="info-item">
+                    <span class="icon">📍</span>
+                    <h3>Dirección</h3>
+                    <p>Av. Principal #123<br>Santo Domingo, República Dominicana</p>
+                </div>
+
+                <div class="info-item">
+                    <span class="icon">📞</span>
+                    <h3>Teléfono</h3>
+                    <p><a href="tel:+18095551234">+1 (809) 555-1234</a></p>
+                    <p><a href="tel:+18095555678">+1 (809) 555-5678</a></p>
+                </div>
+
+                <div class="info-item">
+                    <span class="icon">✉️</span>
+                    <h3>Correo Electrónico</h3>
+                    <p><a href="mailto:info@politecnicopva.edu.do">info@politecnicopva.edu.do</a></p>
+                    <p><a href="mailto:admisiones@politecnicopva.edu.do">admisiones@politecnicopva.edu.do</a></p>
+                </div>
+
+                <div class="info-item">
+                    <span class="icon">🌐</span>
+                    <h3>Redes Sociales</h3>
+                    <p>
+                        <a href="#" target="_blank">Facebook</a> | 
+                        <a href="#" target="_blank">Instagram</a> | 
+                        <a href="#" target="_blank">Twitter</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formulario de Contacto -->
+            <div class="contacto-form">
+                <h2>✉️ Envíanos un Mensaje</h2>
+                
+                <div class="success-message" id="successMessage">
+                    ✅ ¡Mensaje enviado exitosamente! Nos pondremos en contacto contigo pronto.
+                </div>
+
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="nombre">Nombre Completo *</label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico *</label>
+                        <input type="email" id="email" name="email" required placeholder="tu@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="(809) 555-1234">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="asunto">Asunto *</label>
+                        <select id="asunto" name="asunto" required>
+                            <option value="">Selecciona un asunto...</option>
+                            <option value="informacion">Información General</option>
+                            <option value="admisiones">Admisiones</option>
+                            <option value="quejas">Quejas o Sugerencias</option>
+                            <option value="eventos">Eventos</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mensaje">Mensaje *</label>
+                        <textarea id="mensaje" name="mensaje" required placeholder="Escribe tu mensaje aquí..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">📨 Enviar Mensaje</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mapa -->
+        <div class="mapa-section">
+            <h2>📍 Ubicación</h2>
+            <div class="mapa-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.3396897883144!2d-69.89430768510158!3d18.486420987410895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf89f04c1c2a8d%3A0x5e8c3f8b9f8c3a8d!2sSanto%20Domingo%2C%20Rep%C3%BAblica%20Dominicana!5e0!3m2!1ses!2s!4v1234567890123!5m2!1ses!2s"
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Horarios -->
+        <div class="horario-section">
+            <h2>🕐 Horarios de Atención</h2>
+            <div class="horario-grid">
+                <div class="horario-card">
+                    <h3>📚 Secretaría</h3>
+                    <p>Lunes a Viernes<br>8:00 AM - 4:00 PM</p>
+                </div>
+                <div class="horario-card">
+                    <h3>👨‍🏫 Dirección</h3>
+                    <p>Lunes a Viernes<br>9:00 AM - 3:00 PM<br>(Con cita previa)</p>
+                </div>
+                <div class="horario-card">
+                    <h3>📖 Biblioteca</h3>
+                    <p>Lunes a Viernes<br>7:30 AM - 5:00 PM</p>
+                </div>
+                <div class="horario-card">
+                    <h3>💻 Laboratorios</h3>
+                    <p>Lunes a Viernes<br>8:00 AM - 4:30 PM</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Politécnico Profesor Víctor Pascual Aguero</p>
+        <p>Hecho con ❤️ por estudiantes para estudiantes</p>
+    </footer>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Mostrar mensaje de éxito
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            
+            // Limpiar formulario
+            this.reset();
+            
+            // Ocultar mensaje después de 5 segundos
+            setTimeout(function() {
+                successMessage.style.display = 'none';
+            }, 5000);
+            
+            // Scroll suave al mensaje de éxito
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    </script>
+</body>
+</html>

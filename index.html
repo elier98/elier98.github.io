@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politécnico Profesor Víctor Pascual Aguero</title>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        /* Estilos adicionales para el chat */
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(20, 0, 0, 0.98) 0%, rgba(40, 0, 0, 0.98) 100%);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(255, 0, 0, 0.5);
+            border: 2px solid #660000;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .chat-container.minimized {
+            height: 60px;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #330000 0%, #660000 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #880000;
+            cursor: pointer;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #ff6666;
+            text-shadow: 0 0 10px rgba(255, 102, 102, 0.5);
+        }
+
+        .chat-header .online-count {
+            background: #00ff00;
+            color: #000;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .minimize-btn {
+            background: none;
+            border: none;
+            color: #ff6666;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .minimize-btn:hover {
+            color: #ff0000;
+            transform: scale(1.2);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .chat-message {
+            margin-bottom: 12px;
+            padding: 10px;
+            background: linear-gradient(135deg, #330000 0%, #660000 50%, #330000 100%);
+            border-radius: 10px;
+            border: 1px solid #880000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-message.own-message {
+            background: linear-gradient(135deg, #003300 0%, #006600 50%, #003300 100%);
+            border-color: #00aa00;
+        }
+
+        .message-user {
+            font-weight: bold;
+            color: #ff6666;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .own-message .message-user {
+            color: #66ff66;
+        }
+
+        .message-text {
+            color: #ffcccc;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .message-time {
+            font-size: 0.75em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .chat-input-container {
+            padding: 15px;
+            background: linear-gradient(135deg, #220000 0%, #330000 100%);
+            border-radius: 0 0 15px 15px;
+            border-top: 2px solid #880000;
+        }
+
+        .username-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(51, 0, 0, 0.8);
+            border: 2px solid #880000;
+            border-radius: 8px;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .username-input:focus {
+            outline: none;
+            border-color: #ff4444;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 10px;
+            background: rgba(51, 0, 0, 0.8);
+            border: 2px solid #880000;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #ff4444;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+
+        .chat-send-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #660000 0%, #990000 100%);
+            color: white;
+            border: 2px solid #ff0000;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .chat-send-btn:hover {
+            background: linear-gradient(135deg, #990000 0%, #cc0000 100%);
+            transform: scale(1.05);
+        }
+
+        .system-message {
+            text-align: center;
+            color: #ffaa00;
+            font-size: 0.85em;
+            padding: 8px;
+            margin: 8px 0;
+            background: rgba(255, 170, 0, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 170, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                width: calc(100% - 20px);
+                right: 10px;
+                bottom: 10px;
+                height: 400px;
+            }
+
+            .chat-container.minimized {
+                width: 200px;
+            }
+        }
+
+        /* Estilos para scrollbar del chat */
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #660000;
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #990000;
+        }
+
+        .cuadros-videos {
+            width: 100%;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .cuadro-video-estudiante {
+            width: 45%;
+            display: inline-block;
+            vertical-align: top;
+            margin: 10px;
+            padding: 20px;
+            background: linear-gradient(white 50%, #f9f9ff 50%);
+            background-size: 100% 40px;
+            border: 4px solid #2b6cff;
+            border-radius: 15px;
+            box-shadow: 0 0 18px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .cuadro-video-estudiante::before {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: #ff4c4c;
+        }
+
+        .cuadro-video-estudiante::after {
+            content: "📘 Estudiante";
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            background: #2b6cff;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <header>
+        <div class="header-content">
+            <img src="logo del politecnico.webp" alt="Logo Politécnico" class="logo">
+            <div class="header-text">
+                <h1>POLITÉCNICO PROFESOR VÍCTOR PASCUAL AGUERO</h1>
+                <p class="subtitle">Educación de Calidad para el Futuro</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <button onclick="window.location.href='index.html'">🏠 Inicio</button>
+        <button onclick="window.location.href='estudiantes.html'">👥 Estudiantes</button>
+        <button onclick="window.location.href='profesores.html'">👨‍🏫 Profesores</button>
+        <button onclick="window.location.href='galeria.html'">📸 Galería</button>
+        <button onclick="window.location.href='contactos.html'">📞 Contacto</button>
+    </nav>
+
+    <div class="container">
+        <div class="aviso">
+            <p>
+                ⚠️ Esta página <span class="no-ofender">NO</span> está creada para ofender a nadie, 
+                sino que buscamos divertirnos. <span class="no-ofender">NO</span> se ofenda si aparece 
+                su cara y gracia. Todo es con buena intención y humor estudiantil. 😊
+            </p>
+        </div>
+
+        <div class="cuadros-videos">
+            <div class="cuadro-video-estudiante">
+                <blockquote 
+                    class="instagram-media" 
+                    data-instgrm-permalink="https://www.instagram.com/reel/C_DkfIIRA42/" 
+                    data-instgrm-version="14"
+                    style="background:#FFF; border:0; margin:0 auto; padding:0; width:100%; max-width:540px;">
+                </blockquote>
+            </div>
+
+            <div class="cuadro-video-estudiante">
+                <blockquote 
+                    class="instagram-media" 
+                    data-instgrm-permalink="https://www.instagram.com/reel/C8OQYu1tqrd/" 
+                    data-instgrm-version="14"
+                    style="background:#FFF; border:0; margin:0 auto; padding:0; width:100%; max-width:540px;">
+                </blockquote>
+            </div>
+        </div>
+
+        <h2 style="text-align: center; color: #ff4444; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,68,68,0.5);">Secciones Destacadas</h2>
+
+        <div class="secciones">
+            <div class="seccion-card" onclick="window.location.href='eventos.html'">
+                <h3>🎉 Eventos</h3>
+                <p>Actividades y celebraciones</p>
+            </div>
+            <div class="seccion-card" onclick="window.location.href='memes.html'">
+                <h3>😂 Memes</h3>
+                <p>Humor estudiantil</p>
+            </div>
+            <div class="seccion-card" onclick="window.location.href='noticias.html'">
+                <h3>📰 Noticias</h3>
+                <p>Lo último del politécnico</p>
+            </div>
+            <div class="seccion-card" onclick="window.location.href='deportes.html'">
+                <h3>⚽ Deportes</h3>
+                <p>Logros deportivos</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header" onclick="toggleChat()">
+            <h3>💬 Chat en Vivo</h3>
+            <span class="online-count" id="onlineCount">● 1 en línea</span>
+            <button class="minimize-btn" onclick="event.stopPropagation(); toggleChat()">−</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="system-message">
+                👋 ¡Bienvenido al chat del Politécnico! Sé respetuoso y diviértete.
+            </div>
+        </div>
+
+        <div class="chat-input-container">
+            <input 
+                type="text" 
+                id="usernameInput" 
+                class="username-input" 
+                placeholder="Tu nombre..." 
+                maxlength="20"
+            >
+            <div class="chat-input-row">
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    class="chat-input" 
+                    placeholder="Escribe un mensaje..."
+                    maxlength="200"
+                >
+                <button class="chat-send-btn" onclick="sendMessage()">📤</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Politécnico Profesor Víctor Pascual Aguero</p>
+        <p>Hecho con ❤️ por estudiantes para estudiantes</p>
+    </footer>
+
+    <script async src="https://www.instagram.com/embed.js"></script>
+    <script>
+        // Sistema de Chat Persistente usando Storage
+        let username = '';
+        let userId = '';
+
+        // Generar ID único para el usuario
+        function generateUserId() {
+            return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Inicializar usuario
+        async function initUser() {
+            const stored = await window.storage.get('chat_user_id');
+            if (stored && stored.value) {
+                userId = stored.value;
+            } else {
+                userId = generateUserId();
+                await window.storage.set('chat_user_id', userId);
+            }
+        }
+
+        // Cargar mensajes del storage
+        async function loadMessages() {
+            try {
+                const result = await window.storage.get('chat_messages', true);
+                if (result && result.value) {
+                    const messages = JSON.parse(result.value);
+                    displayMessages(messages);
+                }
+            } catch (error) {
+                console.log('No hay mensajes previos');
+            }
+        }
+
+        // Guardar mensaje en storage
+        async function saveMessage(message) {
+            try {
+                let messages = [];
+                try {
+                    const result = await window.storage.get('chat_messages', true);
+                    if (result && result.value) {
+                        messages = JSON.parse(result.value);
+                    }
+                } catch (e) {
+                    messages = [];
+                }
+
+                // Mantener solo los últimos 50 mensajes
+                messages.push(message);
+                if (messages.length > 50) {
+                    messages = messages.slice(-50);
+                }
+
+                await window.storage.set('chat_messages', JSON.stringify(messages), true);
+                return true;
+            } catch (error) {
+                console.error('Error guardando mensaje:', error);
+                return false;
+            }
+        }
+
+        // Mostrar mensajes en el chat
+        function displayMessages(messages) {
+            const chatMessages = document.getElementById('chatMessages');
+            // Mantener mensaje del sistema
+            const systemMsg = chatMessages.querySelector('.system-message');
+            chatMessages.innerHTML = '';
+            if (systemMsg) {
+                chatMessages.appendChild(systemMsg);
+            }
+
+            messages.forEach(msg => {
+                addMessageToUI(msg, msg.userId === userId);
+            });
+
+            scrollToBottom();
+        }
+
+        // Agregar mensaje a la UI
+        function addMessageToUI(message, isOwn = false) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message' + (isOwn ? ' own-message' : '');
+            
+            const time = new Date(message.timestamp).toLocaleTimeString('es-DO', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+
+            messageDiv.innerHTML = `
+                <div class="message-user">${message.username}</div>
+                <div class="message-text">${escapeHtml(message.text)}</div>
+                <div class="message-time">${time}</div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // Enviar mensaje
+        async function sendMessage() {
+            const usernameInput = document.getElementById('usernameInput');
+            const messageInput = document.getElementById('messageInput');
+            
+            username = usernameInput.value.trim();
+            const messageText = messageInput.value.trim();
+
+            if (!username) {
+                alert('Por favor ingresa tu nombre primero');
+                usernameInput.focus();
+                return;
+            }
+
+            if (!messageText) {
+                return;
+            }
+
+            const message = {
+                userId: userId,
+                username: username,
+                text: messageText,
+                timestamp: Date.now()
+            };
+
+            // Agregar a UI inmediatamente
+            addMessageToUI(message, true);
+
+            // Guardar en storage
+            await saveMessage(message);
+
+            // Limpiar input
+            messageInput.value = '';
+            messageInput.focus();
+
+            // Actualizar contador de usuarios
+            updateOnlineCount();
+        }
+
+        // Actualizar contador de usuarios en línea
+        async function updateOnlineCount() {
+            try {
+                const result = await window.storage.get('chat_messages', true);
+                if (result && result.value) {
+                    const messages = JSON.parse(result.value);
+                    // Contar usuarios únicos en los últimos 10 minutos
+                    const tenMinutesAgo = Date.now() - (10 * 60 * 1000);
+                    const recentUsers = new Set(
+                        messages
+                            .filter(m => m.timestamp > tenMinutesAgo)
+                            .map(m => m.userId)
+                    );
+                    const count = recentUsers.size || 1;
+                    document.getElementById('onlineCount').textContent = `● ${count} en línea`;
+                }
+            } catch (error) {
+                document.getElementById('onlineCount').textContent = '● 1 en línea';
+            }
+        }
+
+        // Escapar HTML para prevenir XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Scroll al fondo del chat
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Toggle chat minimizado
+        function toggleChat() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.classList.toggle('minimized');
+        }
+
+        // Enter para enviar mensaje
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageInput = document.getElementById('messageInput');
+            const usernameInput = document.getElementById('usernameInput');
+
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            usernameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    messageInput.focus();
+                }
+            });
+
+            // Inicializar
+            initUser().then(() => {
+                loadMessages();
+                updateOnlineCount();
+                
+                // Actualizar mensajes cada 3 segundos
+                setInterval(() => {
+                    loadMessages();
+                    updateOnlineCount();
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>
